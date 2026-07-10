@@ -26,10 +26,8 @@ class MultiHeadedSelfAttention(nn.Module):
         # Return result rounded to 4 decimal places
         results = torch.empty((embedded.shape[0],embedded.shape[1],0))
 
-        for head in self.heads:
-            out = head(embedded)
-
-            results = torch.cat((results,out), dim=2)
+        outputs = [head(embedded) for head in self.heads]
+        results = torch.cat(outputs,dim=2)
 
         W_O = self.output(results)
 
