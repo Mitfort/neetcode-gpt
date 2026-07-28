@@ -15,15 +15,15 @@ class Solution:
         initial_state = generator.get_state()
         result = []
 
+        if context.shape[1] > context_length:
+            context = context[:,-context_length:]
+
+        logits = model(context)
+
+        output = logits[:,-1,:]
+        probs = nn.Softmax(dim=1)(output)
+
         for i in range(new_chars):
-            
-            if context.shape[1] > context_length:
-                context = context[:,-context_length:]
-
-            logits = model(context)
-
-            output = logits[:,-1,:]
-            probs = nn.Softmax(dim=1)(output)
             # YOUR CODE (arbitrary number of lines)
             # The line where you call torch.multinomial(). Pass in the generator as well.
             generator.set_state(initial_state)
